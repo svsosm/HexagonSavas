@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9147344496192443907}
   - component: {fileID: 748218875254532654}
+  - component: {fileID: 1086182864610079484}
   m_Layer: 0
   m_Name: HexObject
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6148339650844073558}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.002, y: -0.014, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -71,7 +72,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9df35ad1f7b309c49a3e47547addefc1, type: 3}
-  m_Color: {r: 1, g: 0.21960784, b: 0.21960784, a: 1}
+  m_Color: {r: 0.44313726, g: 0.34509805, b: 0.8862745, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -81,3 +82,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!68 &1086182864610079484
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6148339650844073558}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.0014618337, y: -0.3115222}
+  - {x: -0.26463997, y: -0.15838358}
+  - {x: -0.2659834, y: 0.1553516}
+  - {x: 0.0033398792, y: 0.31247276}
+  - {x: 0.26963234, y: 0.15043256}
+  - {x: 0.27009666, y: -0.1584452}
+  - {x: -0.0015792595, y: -0.31159616}

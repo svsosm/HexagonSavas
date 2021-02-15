@@ -63,8 +63,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\HexCell.cs" />
     <Compile Include="Assets\Script\HexMap.cs" />
     <Compile Include="Assets\Script\HexNeighbour.cs" />
+    <Compile Include="Assets\Script\Rotater.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

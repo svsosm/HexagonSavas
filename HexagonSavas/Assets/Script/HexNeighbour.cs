@@ -4,82 +4,49 @@ using UnityEngine;
 
 public class HexNeighbour : MonoBehaviour
 {
+    public static HexNeighbour instance;
 
     public Sprite selectedSprite;
     List<GameObject> selectedHexGroup;
+    public List<GameObject> selectedHexCell;
 
     int width;
     int height;
     public int clickCount;
-    string oldClickCellName;
+
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
         height = HexMap.instance.height;
         width = HexMap.instance.width;
     }
-    private void Update()
-    {
-        if(Input.GetMouseButtonDown(0))
-        {
-
-            SelectHexCell();
-
-        }
-    }
-
-    void SelectHexCell()
-    {
-        Debug.Log("Mouse is down");
-        RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-        if (hitInfo.collider != null)
-        {
-            if (hitInfo.transform.gameObject.tag == "HexCell")
-            {
-                
-                if (oldClickCellName == hitInfo.transform.gameObject.name)
-                {
-                    clickCount++;
-                }
-                else
-                {
-                    clickCount = 1;
-                }
-                oldClickCellName = hitInfo.transform.gameObject.name;
-                SelectAllNeigbourAroundSelectedCell(hitInfo.transform.gameObject, int.Parse(oldClickCellName));
-                
-            }
-            else
-            {
-                Debug.Log("nop");
-            }
-        }
-        else
-        {
-            Debug.Log("no hit");
-        }
-    }
+    
 
     #region SELECT NEIGHBOURS
-    void SelectAllNeigbourAroundSelectedCell(GameObject selectHex, int i)
+    public void SelectAllNeigbourAroundSelectedCell(GameObject selectHex, int i)
     {
         selectedHexGroup = new List<GameObject>();
         selectedHexGroup.Add(HexMap.instance.hexCells[i]);
         if(i == 0) //select bottom left cell
         {
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + height]);
             selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i + width + 1]);
         }
         else if(i == height - 1) //select top left cell
         {
             selectedHexGroup.Add(HexMap.instance.hexCells[i - 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i + width + 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + height]);
         }
         else if(i == Mathf.Pow(width,2) - 1) //select bottom right cell
         {
             selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i - width]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i - width - 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height + 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height]);
         }
         else if(i == (height * width) - 1) //select top right cell
         {
@@ -89,39 +56,42 @@ public class HexNeighbour : MonoBehaviour
         }
         else if(i % 2 == 0 && i < height - 1 && i > 0) // select cell with even index in the left corner
         {
-            selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i + width +1]);
             selectedHexGroup.Add(HexMap.instance.hexCells[i - 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + height]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
+            
+            
         }
-        else if(i % 2 == 0 && i > Mathf.Pow(width,2) - 1 && i < height * width - 1) // select cell with even index in the right corner
+        else if(i % 2 == 0 && i > Mathf.Pow(width,2) - 1 && i < (height * width) - 1) // select cell with even index in the right corner
         {
             selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i - width - 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height]);
             selectedHexGroup.Add(HexMap.instance.hexCells[i - 1]);
         }
         else if (i % 2 != 0 && i < height - 1 && i > 0) // select cell with odd index in the left corner
         {
-            selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i + width + 2]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i +width + 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i + width]);
             selectedHexGroup.Add(HexMap.instance.hexCells[i - 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + height - 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + height]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + height + 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
         }
-        else if (i % 2 != 0 && i > Mathf.Pow(width,2) - 1 && i < height * width - 1) // select cell with odd index in the right corner
+        else if (i % 2 != 0 && i > Mathf.Pow(width,2) - 1 && i < (height * width) - 1) // select cell with odd index in the right corner
         {
             selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i -width]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i - width -1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i - width - 2]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height +1 ]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height - 1]);
             selectedHexGroup.Add(HexMap.instance.hexCells[i - 1]);
 
         }
         else if(i % height == 0 && i > 0 && i < Mathf.Pow(width,2)-1) // select bottom row cell
         {
-            selectedHexGroup.Add(HexMap.instance.hexCells[i - height]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i - height + 1]);
-            selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
             selectedHexGroup.Add(HexMap.instance.hexCells[i + height]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height + 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height]);
+            
         }
         else if(i % height == width && i > width && i < height*width -1) // select top row cell
         {
@@ -129,6 +99,16 @@ public class HexNeighbour : MonoBehaviour
             selectedHexGroup.Add(HexMap.instance.hexCells[i - height - 1]);
             selectedHexGroup.Add(HexMap.instance.hexCells[i - 1]);
             selectedHexGroup.Add(HexMap.instance.hexCells[i + height]);
+        }
+        else if(i % height == 2 && i > 2 && i < Mathf.Pow(width,2) +1 || i % height == 4 && i > 4 && i < Mathf.Pow(width, 2) + 3 || i % height == 6 && i > 6 && i < Mathf.Pow(width, 2) + 5)
+        {
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height + 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - height - 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i - 1]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + height]);
+            selectedHexGroup.Add(HexMap.instance.hexCells[i + 1]);
+
         }
         else //select center cell
         {
@@ -140,6 +120,7 @@ public class HexNeighbour : MonoBehaviour
             selectedHexGroup.Add(HexMap.instance.hexCells[i + height + 1]);
         }
         SelectHexCells(selectedHexGroup);
+
 
     }
 
@@ -156,14 +137,14 @@ public class HexNeighbour : MonoBehaviour
      * normally,neighbours in the clicked corner of the selected cell should be selected.but no time for this.
      * 
      **********************************************/
-    void SelectHexCells(List<GameObject> selectedHexGroup)
+    public void SelectHexCells(List<GameObject> selectedHexGroup)
     {
         List<GameObject> selectedHexCells = new List<GameObject>();
 
         switch(selectedHexGroup.Count)
         {
             case 3:
-                selectedHexCells = selectedHexGroup;
+                SeperateAllSituationForHexGroups(1, selectedHexCells);
                 break;
             case 4:
                 if(clickCount % (selectedHexGroup.Count-2) == 1) //first click
@@ -243,7 +224,7 @@ public class HexNeighbour : MonoBehaviour
 
     }
 
-    void SeperateAllSituationForHexGroups(int count, List<GameObject> hexCells)
+    public void SeperateAllSituationForHexGroups(int count, List<GameObject> hexCells)
     {
         for (int i = count; i < count + 1; i++)
         {
@@ -252,6 +233,7 @@ public class HexNeighbour : MonoBehaviour
             hexCells.Add(selectedHexGroup[i + 1]);
         }
 
+        selectedHexCell = hexCells;
     }
 
     #endregion
